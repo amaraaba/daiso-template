@@ -155,6 +155,55 @@ Should return `True`. If `False`: wrong server or disk path — ask IT or the te
 
 ---
 
+### A5.5 — Import knowledge from Word/OneNote (optional)
+
+Ask: *"Does your team have knowledge docs or OneNote sections you want to import into DAISO as reference guides?"*
+
+**If no:** skip this step.
+
+**If yes:**
+
+Explain the workflow:
+1. **Export from OneNote/Word**: Save the document as `.docx` (Word format)
+2. **Share the path**: Tell Copilot where the file is
+3. **Copilot imports it**: Converts to Markdown with metadata
+4. **Commit to git**: Knowledge is now part of the pack
+
+Ask: *"Do you have a OneNote section or Word doc you want to import?"*
+
+**If they have OneNote:**
+- Open OneNote → right-click section → **Export**
+- Choose **"Word Document (.docx)"** format
+- Save to a folder (e.g., `C:\Temp\exports\`)
+- Come back and say *"I saved it at..."* with the full path
+
+**If they have a Word doc:**
+- Just share the path to the `.docx` file
+
+Once they provide the path, run:
+```powershell
+py common\tools\docx_to_markdown_import.py --docx-file "<path-to-file>" --domain "<domain>" --section-name "<doc-name>"
+```
+
+Example:
+```powershell
+py common\tools\docx_to_markdown_import.py `
+  --docx-file "C:\Temp\exports\Team-Runbook.docx" `
+  --domain firmware `
+  --section-name "Team Runbook"
+```
+
+The tool will:
+- Convert the document to Markdown
+- Create files in `packs\<domain>\knowledge\guides\<section-name>\`
+- Add YAML metadata (title, source, imported date)
+
+Ask: *"Ready to import? Give me the full path to your `.docx` file."*
+
+Then run the import command above and confirm the files were created.
+
+---
+
 ### A6 — Save profile
 
 Save the engineer's identity to `.daiso-profile.toml` at the repo root (gitignored — never committed).
@@ -180,7 +229,7 @@ nfs_disk = "<disk path or empty>"
 
 ---
 
-### A7 — Commit and push the new pack
+### A8 — Commit and push the new pack
 
 The new pack structure should be committed to the repo so the team can pull it.
 
@@ -195,7 +244,7 @@ Share the repo URL with the rest of the team so they can follow **Path B** below
 
 ---
 
-### A8 — Confirm
+### A9 — Confirm
 
 > *"Your team's DAISO is ready. Pack: `<domain>`. Product: `<product>`.*
 > *Share this repo URL with your team: `<repo-url>`*
@@ -271,4 +320,5 @@ Same as A6.
 > *Things to try:*
 > *- Say 'what can you do' to see skills available for your domain*
 > *- Say 'pull latest' to get new knowledge and skills your team has added*
-> *- Say 'teach the AI' when you learn something the AI should know"*
+> *- Say 'teach the AI' when you learn something the AI should know*
+> *- Say 'import docs' if you want to add Word/OneNote docs to the pack"*
