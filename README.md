@@ -1,12 +1,12 @@
-﻿# DAISO — Build Your Team's AI Assistant
+﻿# daiso-template — Build Your Team's AI Assistant
 
-> GitHub Copilot knows Python. DAISO knows *your* tools, products, and workflows.
+> GitHub Copilot knows Python. daiso-template knows *your* tools, products, and workflows.
 
-**DAISO is a template.** Your team clones it, adds your own knowledge, and gets an AI assistant that understands your domain — your NFS paths, your CLI tools, your products, your debug patterns. You own the repo. You own the data.
+**daiso-template is a forkable template.** Your team clones it, adds your own knowledge, and gets an AI assistant that understands your domain — your NFS paths, your CLI tools, your products, your debug patterns. You own the repo. You own the data.
 
 ---
 
-## Why DAISO?
+## Why daiso-template?
 
 Generic GitHub Copilot is powerful for code. But when an engineer asks:
 
@@ -16,17 +16,17 @@ Generic GitHub Copilot is powerful for code. But when an engineer asks:
 
 ...generic Copilot can't help. It doesn't know your tools, your infrastructure, or your team's accumulated knowledge.
 
-DAISO closes that gap. You feed it your team's knowledge once — then every engineer on your team gets an expert assistant that knows your world.
+daiso-template closes that gap. You feed it your team's knowledge once — then every engineer on your team gets an expert assistant that knows your world.
 
 ---
 
 ## Quick Summary — Share This With Your Team
 
-**DAISO is a fork-able template** for Intel teams to build a **domain-expert AI assistant**. Instead of configuring infrastructure or writing complex plugins, you:
+**daiso-template is a forkable template** for Intel teams to build a **domain-expert AI assistant**. Instead of configuring infrastructure or writing complex plugins, you:
 
-1. **Fork the template** (this repo)
+1. **Fork the template** (this repo) to your team's GitHub
 2. **Create your team's pack** — add your domain rules, tools, and knowledge as Markdown files
-3. **Share with your team** — they clone it and say "set me up" in Copilot Chat
+3. **Engineers clone and say "set me up"** in Copilot Chat → 5-minute guided setup
 4. **Grow over time** — engineers teach the AI using "capture this" and "teach the AI" prompts
 
 **What you get:**
@@ -80,15 +80,18 @@ The AI gets smarter every time someone on your team says **"teach the AI"** or *
 
 ## Getting Started (New Team)
 
-### Step 1 — Fork or clone this template
+### Step 1 — Fork this template to your team's GitHub
 
-Create your team's own repo from this template on GitHub:
+Create your team's own repo from this template:
 
 ```
-https://github.com/amaraaba/daiso  →  "Use this template"  →  name it e.g. my-team-daiso
+https://github.com/amaraaba/daiso-template
+  → Click "Use this template" (top right)
+  → Name it: my-team-daiso (or your team's name)
+  → Create repository
 ```
 
-Or fork it directly. Either way — you get your own independent repo.
+You now have your team's independent copy.
 
 ### Step 2 — Create your pack
 
@@ -114,12 +117,18 @@ One person on your team owns the pack — reviews PRs, keeps instructions accura
 
 ### Step 4 — Invite your team
 
-Share your repo link. Every engineer clones it and says **"set me up"** in Copilot Chat. Onboarding takes ~3 minutes.
+Share your repo with your team. Each engineer:
 
+1. Clones the repo:
 ```powershell
 git clone https://github.com/<your-org>/<your-team-daiso>.git
-# Open the folder in VS Code, then in Copilot Chat: "set me up"
 ```
+
+2. Opens the folder in VS Code
+
+3. **In Copilot Chat, says:** `set me up`
+
+Copilot will guide them through onboarding (~3 minutes). Profile is saved locally (not committed).
 
 ---
 
@@ -163,7 +172,7 @@ GitHub (your team's repo — source of truth)
 
 - **Windows** — Copilot reads instructions, skills, and knowledge. Python tools run locally.
 - **NFS** — your team's files (logs, configs, data) accessed via Samba UNC paths. No VNC copy. No SSH.
-- **Linux commands** — if your workflows require Linux tools, DAISO generates the raw command string; the engineer pastes it into their Linux terminal.
+- **Linux commands** — if your workflows require Linux tools, daiso-template generates the raw command string; the engineer pastes it into their Linux terminal.
 
 ---
 
