@@ -10,3 +10,5 @@ build/
 .daiso-profile.toml
 *.xlsx
 *.pptx
+
+.daiso-token-cache.json
