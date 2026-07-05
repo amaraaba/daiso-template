@@ -1,183 +1,279 @@
----
+﻿---
 name: setup
 description: >
-  Set up DAISO for a new engineer — prerequisites, clone, Samba access.
-  Use when: setup, onboard, new user, first time, configure, install, getting started.
+  Set up DAISO for a new engineer or a new team.
+  Use when: set me up, setup, onboard, new user, first time, configure, install, getting started, I am new, help me get started.
 ---
 
 # Setup DAISO — Guided Onboarding
 
-## When to use
-- New engineer joining DAISO for the first time.
-- Reconfiguration needed (new product, new domain).
-
-This is a **one-time setup**. Once complete, future sessions skip straight to the greeting.
-
-## How to guide
-- Walk the engineer through ONE step at a time.
-- Wait for confirmation ("done", "ready", "next") before moving on.
-- If a step fails, help troubleshoot before continuing.
+## How to run this skill
+- ONE step at a time. Wait for the user to confirm ("done", "ready", "ok", "next") before moving on.
+- Run verification commands yourself in the terminal — do not just tell the user to run them.
+- If a step fails, troubleshoot it before continuing. Never skip a failing step.
+- Be conversational — this is a guided experience, not a form dump.
 
 ---
 
-## Step 1: Prerequisites
+## Step 0: Understand who this is
 
-**VS Code extensions** (required):
-- GitHub Copilot
-- GitHub Copilot Chat
+Ask ONE question first:
 
-**Git on Windows** — required to clone the repo. Test from any PowerShell or VS Code terminal:
+> "Welcome! Quick question before we start — are you:
+> **A)** Setting up DAISO for your team for the first time (you're the champion or tech lead)?
+> **B)** Joining a team that already has DAISO set up?"
+
+Go to **Path A** or **Path B** based on the answer.
+
+---
+
+## Path A — First-time team setup (champion / tech lead)
+
+Use this path when no one on the team has set up DAISO yet.
+
+### A1 — Check prerequisites
+
+Run these in the VS Code terminal to verify:
+
 ```powershell
 git --version
+py --version
 ```
-If "command not found" or similar, install Git:
+
+**If git is missing:**
 ```powershell
 winget install --id Git.Git -e --source winget
 ```
-After install, **close and reopen the terminal** so PATH refreshes. If `winget` itself fails behind Intel proxy, run the installer manually after setting:
-```powershell
-$env:HTTP_PROXY  = "http://proxy-chain.intel.com:911"
-$env:HTTPS_PROXY = "http://proxy-chain.intel.com:911"
-```
-(Alternative proxies: `proxy-chain.intel.com:912`, `proxy-dmz.intel.com:911`.)
+After install: close and reopen the terminal, then re-verify with `git --version`.
 
-**Python on Windows** — required to run DAISO tools. Test:
+If winget fails (Intel proxy):
 ```powershell
-py --version
+$env:HTTPS_PROXY = "http://proxy-chain.intel.com:911"
+winget install --id Git.Git -e --source winget
 ```
-If not found, install from https://www.python.org/downloads/ or:
+
+**If Python is missing:**
 ```powershell
 winget install --id Python.Python.3.12 -e --source winget
 ```
 
----
+**VS Code extensions** — ask the user to confirm both are installed:
+- GitHub Copilot
+- GitHub Copilot Chat
 
-## Step 2: Clone your team's DAISO repo in VS Code
-
-Before starting, get your **team's repo URL** from your DAISO champion (it's the GitHub repo your team created from the DAISO template — e.g. `https://github.com/<your-org>/<your-team-daiso>.git`).
-
-Open VS Code. You should see the **Welcome** tab (if not, `Help → Welcome`). At this point no folder is open yet — that's fine. Pick **one** of the two paths below.
-
-### Path A (recommended): VS Code's built-in clone
-
-This is the easiest path and avoids the nested-folder trap because VS Code creates the subfolder for you.
-
-1. On the Welcome tab, click **"Clone Git Repository..."**.
-   - Or: `Ctrl+Shift+P` → type `Git: Clone` → Enter.
-2. **Paste your team's repo URL** when prompted and press Enter.
-3. VS Code opens a folder picker: **"Select Repository Location"**. Pick (or create) a *parent* folder — e.g. `C:\vs_projects`. **Pick the parent, not a folder with the repo name.** VS Code creates the subfolder for you.
-4. When the clone finishes, VS Code asks **"Would you like to open the cloned repository?"** → click **Open**.
-
-If clone fails:
-- "Git not found" → go back to Step 1 and install Git, then restart VS Code.
-- Authentication prompt → sign in with your GitHub account in the VS Code popup (or use a Personal Access Token as the password).
-- Network error → check Intel proxy if you're off VPN.
-
-### Path B: Terminal clone (if you prefer the command line)
-
-1. **Pick (or create) a *parent* folder** — e.g. `C:\vs_projects`. This is the folder that will *contain* your repo, not the repo itself.
-2. **File → Open Folder...** and select that parent folder.
-3. **View → Terminal** (or `` Ctrl+` ``). Confirm with `pwd` that you're in the parent.
-4. **In the terminal, run:**
-   ```powershell
-   git clone <your-team-repo-url>
-   ```
-5. **File → Open Folder...** again, this time pick the newly created repo folder.
-
-**Recovery — if you already opened an empty folder by mistake:** In the terminal (already inside that folder), run `git clone <your-team-repo-url> .` — the trailing dot clones into the current folder. The folder must be empty.
-
-### Confirm
-
-Whichever path you took, the file explorer on the left should now show `common/`, `packs/`, `README.md`, etc.
+(`Ctrl+Shift+X` → search "GitHub Copilot" — both should show as installed)
 
 ---
 
-## Step 3: Choose your domain(s) and product
+### A2 — Create your team's repo
 
-Ask: *"Which domain(s) do you work in? Pick one or more from the packs available under `packs/` in the repo."*
+Ask: *"Has your team already created a GitHub repo from the DAISO template?"*
 
-Ask: *"What product?"* (e.g. `nvl`, `ptl`, `arl`)
+**If no:**
+1. Go to **https://github.com/amaraaba/daiso-template**
+2. Click **"Use this template"** → **"Create a new repository"**
+3. Name it (e.g. `my-team-daiso`). Private is recommended for internal teams.
+4. Click **"Create repository"** and copy the repo URL.
+
+**If yes:** get the URL from them and proceed.
 
 ---
 
-## Step 4: Set up Samba access
+### A3 — Clone and open in VS Code
 
-DAISO tools access NFS files (deposit lists, emulation logs, coverage data) directly from Windows via Samba. No files need to be copied to VNC.
+If the repo is not yet open locally:
 
-Ask: *"What Samba server do you use?"* (default: `sc8-samba.sc.intel.com`)
+**Option 1 (recommended):** `Ctrl+Shift+P` → `Git: Clone` → paste the repo URL → pick a parent folder (e.g. `C:\vs_projects`) → click Open when prompted.
 
-If the engineer is at a different Intel site, look up their Samba server from `common/lib/paths.py` → `SAMBA_SERVERS` dict. Common sites:
-- SC8 (default): `sc8-samba.sc.intel.com`
-- IIL/LC (Israel): `samba.iil.intel.com`
-- PDX: `samba.pdx.intel.com`
-- FM: `samba.fm.intel.com`
-
-Full mapping: https://wiki.ith.intel.com/spaces/HPCTraining/pages/1803211685/How+do+I+access+Samba
-
-Ask: *"What NFS disk do you use?"* (default: `mfg_nvl_016`)
-
-Authenticate the Samba session (one-time per Windows login):
+**Option 2 (terminal):**
 ```powershell
-net use "\\<samba>\nfs\site\disks\<nfs-disk>" /user:<idsid>
+cd C:\vs_projects
+git clone <your-repo-url>
 ```
-The engineer types their password when prompted.
+Then `File → Open Folder` and select the newly created folder.
 
-Verify access:
-```powershell
-Test-Path "\\<samba>\nfs\site\disks\<nfs-disk>\<idsid>"
-```
-Should print `True`. If `False`:
-- Wrong Samba server — try `sc8-samba.sc.intel.com`, `samba.iil.intel.com`, or ask IT.
-- Wrong NFS disk — ask the engineer for their actual disk path.
-- Authentication failed — re-run `net use` with correct credentials.
+Verify the folder looks right — the explorer on the left should show `common/`, `packs/`, `README.md`.
 
 ---
 
-## Step 5: Verify tools work
+### A4 — Create your team's pack
 
-Test that DAISO tools can read NFS files via Samba. Run a tool from your domain's pack:
+Check what packs already exist:
 ```powershell
-py packs\<domain>\tools\cli.py --help
+Get-ChildItem packs\ -Directory | Select-Object Name
 ```
 
-If Python errors occur:
-- "py not found" → go back to Step 1 and install Python.
-- Import errors → check that the workspace is the `daiso` folder (not a parent).
+The `example-domain-*/` folders are reference scaffolds — ignore them for now.
+
+Ask: *"What do you want to call your domain? Use a short name, lowercase, no spaces — e.g. `firmware`, `dft`, `platform`, `validation`."*
+
+Create the pack structure:
+```powershell
+$domain = "<their-answer>"
+New-Item -ItemType Directory -Force -Path "packs\$domain\skills", "packs\$domain\knowledge\guides", "packs\$domain\knowledge\reference", "packs\$domain\knowledge\data", "packs\$domain\products", "packs\$domain\tools"
+New-Item -ItemType File -Force -Path "packs\$domain\instructions.md"
+```
+
+Open `packs\<domain>\instructions.md` and help them write the first 3–5 rules the AI should always follow for their domain. Ask:
+- What internal tools does your team use?
+- What are the most common mistakes to avoid?
+- What products/silicon do you work on?
+
+Keep each rule as one bullet. They can always add more later.
+
+Ask: *"What product or project does your team work on?"* Create a product folder:
+```powershell
+$product = "<their-answer>"
+New-Item -ItemType Directory -Force -Path "packs\$domain\products\$product\knowledge\guides", "packs\$domain\products\$product\knowledge\reference", "packs\$domain\products\$product\knowledge\data"
+New-Item -ItemType File -Force -Path "packs\$domain\products\$product\config.toml"
+```
 
 ---
 
-## Step 6: Save Profile
+### A5 — Samba / NFS access (optional)
 
-Save the engineer's identity to `.daiso-profile.toml` (gitignored, local-only). This lets other skills (like `bootstrap-pack`) skip re-asking who they are.
+Ask: *"Do your team's tools need to read files from Intel NFS disks (e.g. logs, configs, run outputs)?"*
 
-Create the file at the repo root:
+**If no:** skip this step entirely.
+
+**If yes:**
+
+Ask:
+- *"What's your Samba server?"* — look up in `common/lib/paths.py` → `SAMBA_SERVERS` if unsure. Common ones:
+  - SC8: `sc8-samba.sc.intel.com`
+  - IIL/Israel: `samba.iil.intel.com`
+  - PDX: `samba.pdx.intel.com`
+  - FM: `samba.fm.intel.com`
+- *"What NFS disk path do your team's files live under?"* (e.g. `/nfs/site/disks/mfg_xxx_016`)
+
+Authenticate (one-time per Windows login):
+```powershell
+net use "\\<samba-server>\nfs\site\disks\<disk>" /user:<idsid>
+```
+The user types their password when prompted.
+
+Verify:
+```powershell
+Test-Path "\\<samba-server>\nfs\site\disks\<disk>"
+```
+Should return `True`. If `False`: wrong server or disk path — ask IT or the team's NFS admin.
+
+---
+
+### A6 — Save profile
+
+Save the engineer's identity to `.daiso-profile.toml` at the repo root (gitignored — never committed).
+
+Ask for their IDSID if not already known: *"What's your IDSID (your Intel login ID)?"*
+
+Write the file:
 ```toml
-# DAISO Engineer Profile — local only, not committed
-# Re-run setup to regenerate
+# DAISO local profile — not committed, local machine only
 
 [engineer]
 idsid = "<idsid>"
-name = "<full name if given, otherwise omit>"
 
 [domain]
-pack = "<domain>"          # matches a folder under packs/
-product = "<product>"      # e.g. nvl, ptl, arl
+pack = "<domain>"
+product = "<product>"
 
 [samba]
-server = "<samba server>"  # sc8-samba.sc.intel.com
-nfs_disk = "<nfs disk>"    # mfg_nvl_016
+enabled = <true or false>
+server = "<samba-server or empty>"
+nfs_disk = "<disk path or empty>"
 ```
-
-Use `vscode_askQuestions` to ask for the IDSID if not already known:
-- **"What's your IDSID?"** (e.g., `amaraaba`) — *"Your Intel login ID. Used for git branches and NFS paths."*
-
-Write the file with the answers collected during setup.
 
 ---
 
-## Step 7: Confirm
+### A7 — Commit and push the new pack
 
-> *"You're all set. Domain(s): <domains>. Product: <product>.*
-> *Your profile is saved in `.daiso-profile.toml` (local only, not committed).*
-> *To stay updated, just say 'pull latest' or run `git pull` in the terminal.*
-> *To add another domain later, just tell me."*
+The new pack structure should be committed to the repo so the team can pull it.
+
+Run:
+```powershell
+git add packs\<domain>\
+git commit -m "Add <domain> pack scaffold"
+git push
+```
+
+Share the repo URL with the rest of the team so they can follow **Path B** below.
+
+---
+
+### A8 — Confirm
+
+> *"Your team's DAISO is ready. Pack: `<domain>`. Product: `<product>`.*
+> *Share this repo URL with your team: `<repo-url>`*
+> *They clone it and say 'set me up' — onboarding takes ~3 minutes.*
+>
+> *Next steps to get more value:*
+> *- Say 'teach the AI' to add your first knowledge guide*
+> *- Say 'what can you do' to see available skills*
+> *- Check `templates/pack-checklist.md` for the full setup checklist"*
+
+---
+
+## Path B — Engineer joining an existing team
+
+Use this path when the team already has a DAISO repo set up.
+
+### B1 — Check prerequisites
+
+Same as A1 — verify git, Python, and VS Code extensions.
+
+---
+
+### B2 — Get the repo URL
+
+Ask: *"What's your team's DAISO repo URL? (Get it from your team's DAISO champion if you don't have it)"*
+
+---
+
+### B3 — Clone and open in VS Code
+
+Same as A3.
+
+---
+
+### B4 — Choose your domain and product
+
+Scan what packs exist:
+```powershell
+Get-ChildItem packs\ -Directory | Where-Object { $_.Name -notlike "example-domain*" } | Select-Object Name
+```
+
+Show the list and ask: *"Which domain do you work in?"*
+
+Then ask: *"What product?"* — scan `packs\<domain>\products\` for existing products and show them.
+
+---
+
+### B5 — Samba / NFS access (optional)
+
+Check if the pack has tools that use NFS:
+```powershell
+Test-Path "packs\<domain>\tools"
+```
+
+If tools exist, ask: *"Do you need to access NFS files from Windows for your work? (Your champion can tell you if unsure)"*
+
+If yes — follow the same Samba setup as **A5**.
+If no — skip.
+
+---
+
+### B6 — Save profile
+
+Same as A6.
+
+---
+
+### B7 — Confirm
+
+> *"You're all set. Domain: `<domain>`. Product: `<product>`.*
+> *Profile saved locally in `.daiso-profile.toml` (not committed).*
+>
+> *Things to try:*
+> *- Say 'what can you do' to see skills available for your domain*
+> *- Say 'pull latest' to get new knowledge and skills your team has added*
+> *- Say 'teach the AI' when you learn something the AI should know"*
