@@ -20,6 +20,31 @@ DAISO closes that gap. You feed it your team's knowledge once — then every eng
 
 ---
 
+## Quick Summary — Share This With Your Team
+
+**DAISO is a fork-able template** for Intel teams to build a **domain-expert AI assistant**. Instead of configuring infrastructure or writing complex plugins, you:
+
+1. **Fork the template** (this repo)
+2. **Create your team's pack** — add your domain rules, tools, and knowledge as Markdown files
+3. **Share with your team** — they clone it and say "set me up" in Copilot Chat
+4. **Grow over time** — engineers teach the AI using "capture this" and "teach the AI" prompts
+
+**What you get:**
+- ✅ Copilot learns your tools, products, and workflows
+- ✅ Every engineer gets a personal expert assistant
+- ✅ Knowledge stays in Git (version control, team history)
+- ✅ No infrastructure, no database, no complexity
+- ✅ Setup takes ~15 minutes for a new team
+
+**Example use cases:**
+- *"What's the right command to run this test?"* → AI knows your test framework + product + flags
+- *"Debug this error"* → AI knows your common failure patterns + logs + tools
+- *"Generate the runbook"* → AI knows your process + templates + team rules
+
+**Get started:** See "Getting Started" below, or jump to [`templates/pack-checklist.md`](templates/pack-checklist.md) for a detailed checklist.
+
+---
+
 ## How It Works
 
 ```
