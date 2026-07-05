@@ -79,20 +79,15 @@ Ask: *"Has your team already created a GitHub repo from the DAISO template?"*
 
 ---
 
-### A3 — Clone and open in VS Code
+### A3 — Verify workspace
 
-If the repo is not yet open locally:
+You're talking to Copilot, so the repo is already open. Quickly verify it's the right folder:
 
-**Option 1 (recommended):** `Ctrl+Shift+P` → `Git: Clone` → paste the repo URL → pick a parent folder (e.g. `C:\vs_projects`) → click Open when prompted.
-
-**Option 2 (terminal):**
 ```powershell
-cd C:\vs_projects
-git clone <your-repo-url>
+Test-Path common ; Test-Path packs
 ```
-Then `File → Open Folder` and select the newly created folder.
 
-Verify the folder looks right — the explorer on the left should show `common/`, `packs/`, `README.md`.
+Both should return `True`. If not, the wrong folder is open — `File → Open Folder` and select the DAISO repo root.
 
 ---
 
@@ -223,19 +218,19 @@ Same as A1 — verify git, Python, and VS Code extensions.
 
 ---
 
-### B2 — Get the repo URL
+### B2 — Verify workspace
 
-Ask: *"What's your team's DAISO repo URL? (Get it from your team's DAISO champion if you don't have it)"*
+You're talking to Copilot, so the repo is already open. Quickly verify it's the right folder:
+
+```powershell
+Test-Path common ; Test-Path packs
+```
+
+Both should return `True`. If not, the wrong folder is open — `File → Open Folder` and select the DAISO repo root.
 
 ---
 
-### B3 — Clone and open in VS Code
-
-Same as A3.
-
----
-
-### B4 — Choose your domain and product
+### B3 — Choose your domain and product
 
 Scan what packs exist:
 ```powershell
@@ -248,7 +243,7 @@ Then ask: *"What product?"* — scan `packs\<domain>\products\` for existing pro
 
 ---
 
-### B5 — Samba / NFS access (optional)
+### B4 — Samba / NFS access (optional)
 
 Check if the pack has tools that use NFS:
 ```powershell
@@ -262,13 +257,13 @@ If no — skip.
 
 ---
 
-### B6 — Save profile
+### B5 — Save profile
 
 Same as A6.
 
 ---
 
-### B7 — Confirm
+### B6 — Confirm
 
 > *"You're all set. Domain: `<domain>`. Product: `<product>`.*
 > *Profile saved locally in `.daiso-profile.toml` (not committed).*
