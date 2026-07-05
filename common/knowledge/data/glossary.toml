@@ -1,0 +1,35 @@
+[MBIST]
+term = "Memory Built-In Self-Test"
+definition = "On-chip test logic that tests embedded memories."
+
+[ATPG]
+term = "Automatic Test Pattern Generation"
+definition = "Algorithmic generation of test vectors to detect faults."
+
+[DFT]
+term = "Design for Test"
+definition = "Design techniques that make a chip testable."
+
+[MCP]
+term = "Model Context Protocol"
+definition = "Protocol connecting AI assistants to external tools."
+
+[NFS]
+term = "Network File System"
+definition = "Distributed file system for shared storage."
+
+[VNC]
+term = "Virtual Network Computing"
+definition = "Remote Linux desktop session for CAD work."
+
+[IDSID]
+term = "Intel Design System ID"
+definition = "Engineer's unique identifier across Intel systems."
+
+[iTrace]
+term = "Intel Trace"
+definition = "Emulation infrastructure for running DFT test content."
+
+[STIL]
+term = "Standard Test Interface Language"
+definition = "IEEE 1450 format for test patterns."
